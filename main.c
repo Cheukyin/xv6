@@ -106,8 +106,14 @@ startothers(void)
 __attribute__((__aligned__(PGSIZE)))
 pde_t entrypgdir[NPDENTRIES] = {
   // Map VA's [0, 4MB) to PA's [0, 4MB)
+  //PTE_PS sets the page size to 4MB
   [0] = (0) | PTE_P | PTE_W | PTE_PS,
   // Map VA's [KERNBASE, KERNBASE+4MB) to PA's [0, 4MB)
+  //Page Size if 4MB(2^22 bytes), so the VPO needs 22 bits
+  //Then the VPN needs 10 bits only,
+  //If we want to get the VPN,
+  //we need to right shift the segment reg by 22 bits
+  //So KERNBASE>>PDXSHIFT = KERNBASE>>22
   [KERNBASE>>PDXSHIFT] = (0) | PTE_P | PTE_W | PTE_PS,
 };
 

@@ -98,6 +98,7 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int sys_date(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -121,31 +122,33 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_date]    sys_date,
 };
 
-static char *syscall_str[] = {
-[SYS_fork]    "fork",
-[SYS_exit]    "exit",
-[SYS_wait]    "wait",
-[SYS_pipe]    "pipe",
-[SYS_read]    "read",
-[SYS_kill]    "kill",
-[SYS_exec]    "exec",
-[SYS_fstat]   "fstat",
-[SYS_chdir]   "chdir",
-[SYS_dup]     "dup",
-[SYS_getpid]  "getpid",
-[SYS_sbrk]    "sbrk",
-[SYS_sleep]   "sleep",
-[SYS_uptime]  "uptime",
-[SYS_open]    "open",
-[SYS_write]   "write",
-[SYS_mknod]   "mknod",
-[SYS_unlink]  "unlink",
-[SYS_link]    "link",
-[SYS_mkdir]   "mkdir",
-[SYS_close]   "close",
-};
+/* static char *syscall_str[] = { */
+/* [SYS_fork]    "fork", */
+/* [SYS_exit]    "exit", */
+/* [SYS_wait]    "wait", */
+/* [SYS_pipe]    "pipe", */
+/* [SYS_read]    "read", */
+/* [SYS_kill]    "kill", */
+/* [SYS_exec]    "exec", */
+/* [SYS_fstat]   "fstat", */
+/* [SYS_chdir]   "chdir", */
+/* [SYS_dup]     "dup", */
+/* [SYS_getpid]  "getpid", */
+/* [SYS_sbrk]    "sbrk", */
+/* [SYS_sleep]   "sleep", */
+/* [SYS_uptime]  "uptime", */
+/* [SYS_open]    "open", */
+/* [SYS_write]   "write", */
+/* [SYS_mknod]   "mknod", */
+/* [SYS_unlink]  "unlink", */
+/* [SYS_link]    "link", */
+/* [SYS_mkdir]   "mkdir", */
+/* [SYS_close]   "close", */
+/* [SYS_date]    "date", */
+/* }; */
 
 void
 syscall(void)
@@ -157,7 +160,7 @@ syscall(void)
     proc->tf->eax = syscalls[num]();
     //print out a line for each system call invocation:
     //the name of the system call -> the return value
-    cprintf("%s -> %d\n", syscall_str[num], proc->tf->eax);
+    /* cprintf("%s -> %d\n", syscall_str[num], proc->tf->eax); */
   } else {
     cprintf("%d %s: unknown sys call %d\n",
             proc->pid, proc->name, num);
